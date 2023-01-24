@@ -151,3 +151,27 @@ app.get("/bands", async (req: Request, res: Response) => {
         }
     }
  })
+
+app.get("/bands/:id", async (req:Request, res: Response) => {
+    try {
+        const id = req.params.id
+        const [band] = await db.raw(`
+        SELECT * FROM bands
+        WHERE id = "${id}"
+        `)
+        res.status(200).send(band)
+    } catch (error) {
+        console.log(error)
+
+        if (req.statusCode === 200) {
+            res.status(500)
+        }
+
+        if (error instanceof Error) {
+            res.send(error.message)
+        } else {
+            res.send("Erro inesperado")
+        }
+    }
+
+})
