@@ -203,7 +203,7 @@ app.delete('/bands/:id', async (req: Request, res: Response) => {
         }
         const [foundBand] = await db("bands").where({id})
 
-        if(foundBand){
+        if(!foundBand){
             await db("bands").del().where({id})
             res.status(200).send("Banda deletada com sucesso")
         }else{
